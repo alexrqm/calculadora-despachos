@@ -3,7 +3,7 @@ name: Verificar calculadora publicada
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [pages build and deployment]
+    workflows: [pages-build-deployment, pages build and deployment]
     types: [completed]
     branches: [main]
 
