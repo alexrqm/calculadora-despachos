@@ -1,0 +1,14 @@
+{
+  "name": "calculadora-despachos-inductometal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/preview.mjs",
+    "test": "node --test tests/tarifas.test.mjs",
+    "test:published": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}

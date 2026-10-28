@@ -1,0 +1,35 @@
+name: Verificar calculadora publicada
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [pages build and deployment]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:published
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verificacion-publicada
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14

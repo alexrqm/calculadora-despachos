@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+*.tar.gz
+*.tgz
+.openai/
+playwright-report/
+test-results/
+verification-artifacts/

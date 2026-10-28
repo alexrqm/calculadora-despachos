@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Calcula el valor de tu despacho Inductometal por distancia, con recargo Chiloé e IVA incluido." />
+    <meta name="theme-color" content="#0c1114" />
+    <title>Calculadora de Despachos | Inductometal</title>
+    <link rel="icon" type="image/png" href="dist/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="dist/styles.css" />
+    <script type="module" src="dist/app.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-logo" src="dist/logo.png" alt="Inductometal" width="72" height="72" />
+          <div><p class="brand-name">INDUCTOMETAL</p><h1>Calculadora de Despachos</h1></div>
+        </div>
+        <span class="currency-badge">Valores en CLP</span>
+      </header>
+
+      <div class="workspace">
+        <div class="input-column">
+          <section class="panel" aria-labelledby="dispatch-title">
+            <div class="panel-header">
+              <div><p class="section-kicker">Calcula tu despacho</p><h2 id="dispatch-title">Datos del recorrido</h2></div>
+              <button class="secondary-button" id="resetButton" type="button">Reiniciar</button>
+            </div>
+            <div class="panel-body">
+              <label class="field-label" for="distance">Distancia del despacho</label>
+              <div class="distance-field"><input id="distance" type="number" min="0" step="any" inputmode="decimal" placeholder="Ej. 200" aria-describedby="distanceHelp distanceError" /><span aria-hidden="true">km</span></div>
+              <p class="field-help" id="distanceHelp">Ingresa los kilómetros del recorrido para calcular el valor.</p>
+              <p class="field-error" id="distanceError" hidden></p>
+
+              <label class="chiloe-option" for="chiloe">
+                <span class="chiloe-text"><span class="option-title">Chiloé</span><span class="option-help">Agregar recargo por destino</span></span>
+                <span class="surcharge" id="surchargeLabel"></span>
+                <span class="switch"><input id="chiloe" type="checkbox" role="switch" aria-describedby="surchargeLabel" /><span class="switch-track" aria-hidden="true"></span></span>
+              </label>
+              <p class="tax-note">El recargo se suma al valor neto y está afecto a IVA.</p>
+              <div class="status-note" id="statusNote" role="status">Ingresa una distancia para ver el resultado.</div>
+            </div>
+          </section>
+
+          <section class="panel tariffs-panel" aria-labelledby="tariffs-title">
+            <div class="panel-header"><div><p class="section-kicker">Tarifas netas</p><h2 id="tariffs-title">Valores por distancia</h2></div><span class="small-badge">CLP</span></div>
+            <div class="table-wrap"><table><thead><tr><th scope="col">Tramo</th><th scope="col">Valor neto</th><th scope="col">Cálculo</th></tr></thead><tbody id="tariffRows"></tbody></table></div>
+            <p class="tariff-note" id="tariffNote"></p>
+          </section>
+        </div>
+
+        <aside class="summary" aria-labelledby="summary-title" aria-live="polite" aria-atomic="true">
+          <section class="panel summary-panel">
+            <div class="panel-header"><div><p class="section-kicker">Tu cotización</p><h2 id="summary-title">Resumen del despacho</h2></div></div>
+            <dl class="summary-details">
+              <div><dt>Distancia</dt><dd id="distanceResult">—</dd></div>
+              <div><dt>Tramo aplicado</dt><dd id="tierResult">—</dd></div>
+              <div class="cost-row"><dt>Valor neto del despacho</dt><dd id="dispatchResult">—</dd></div>
+              <div class="chiloe-result" id="chiloeRow" hidden><dt>Recargo Chiloé</dt><dd id="chiloeResult">—</dd></div>
+              <div class="net-row"><dt>Total neto</dt><dd id="netResult">—</dd></div>
+              <div><dt id="vatLabel">IVA</dt><dd id="vatResult">—</dd></div>
+            </dl>
+          </section>
+          <div class="total-card"><span>TOTAL IVA INCLUIDO</span><strong id="totalResult">—</strong><span class="total-caption" id="totalCaption">Completa la distancia del despacho</span></div>
+          <p class="summary-note">Los valores se actualizan automáticamente.</p>
+        </aside>
+      </div>
+      <footer>Inductometal <span aria-hidden="true">·</span> Calculadora de despachos</footer>
+      <noscript><p class="noscript">Activa JavaScript en tu navegador para usar la calculadora.</p></noscript>
+    </main>
+  </body>
+</html>
