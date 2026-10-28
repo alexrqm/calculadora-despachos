@@ -16,7 +16,9 @@ Ejecutar `npm test` para verificar tarifas, límites, decimales, IVA y cotizaci�
 
 Todas las tarifas, el recargo Chiloé, el IVA y los límites de distancia están al inicio de `dist/tarifas.mjs`, dentro de `CONFIG`. Los textos, la tabla y los resultados se generan a partir de esa configuración.
 
-La tarifa usa interpolación exacta entre los extremos de cada tramo. Se redondea el despacho neto al peso más cercano, luego se suma el recargo y se calcula el IVA sobre el total neto, redondeado al peso. El total final es la suma del neto y el IVA mostrado.
+La tarifa alterna tramos progresivos y fijos según los límites y precios definidos en `CONFIG`. Las mesetas incluyen ambos extremos; las subidas excluyen sus extremos para asignar cada transición al tramo fijo correspondiente.
+
+Los tramos progresivos usan interpolación exacta entre sus extremos. Se redondea el despacho neto al peso más cercano, luego se suma el recargo y se calcula el IVA sobre el total neto, redondeado al peso. El total final es la suma del neto y el IVA mostrado.
 
 Una distancia vacía o inválida no muestra importes. Cero kilómetros es válido y aplica la tarifa fija del primer tramo. Sobre el límite máximo se solicita cotización especial sin calcular importes, incluso con Chiloé activado.
 

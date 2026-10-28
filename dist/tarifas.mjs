@@ -6,16 +6,17 @@ export const CONFIG = Object.freeze({
   hasta300: 480000,
   recargoChiloe: 30000,
   iva: 0.19,
-  limitesKm: Object.freeze([50, 120, 200, 300]),
+  limitesKm: Object.freeze([50, 90, 120, 160, 200, 250, 300]),
 });
 
 export const TRAMOS = Object.freeze(
-  [CONFIG.hasta50, CONFIG.hasta120, CONFIG.hasta200, CONFIG.hasta300].map((neto, i, precios) =>
+  [CONFIG.hasta50, CONFIG.hasta120, CONFIG.hasta120, CONFIG.hasta200, CONFIG.hasta200, CONFIG.hasta300, CONFIG.hasta300].map((neto, i, precios) =>
     Object.freeze({
       desde: i === 0 ? 0 : CONFIG.limitesKm[i - 1],
       hasta: CONFIG.limitesKm[i],
       netoDesde: i === 0 ? neto : precios[i - 1],
       netoHasta: neto,
+      tipo: (i === 0 || precios[i - 1] === neto) ? 'fijo' : 'progresivo',
     }),
   ),
 );
@@ -24,7 +25,10 @@ export function calcularDespacho(km, chiloe = false) {
   if (typeof km !== 'number' || !Number.isFinite(km) || km < 0) {
     return { estado: 'invalido' };
   }
-  const tramo = TRAMOS.find((item) => km <= item.hasta);
+  // Las mesetas incluyen ambos extremos; las subidas excluyen sus extremos.
+  const tramo = TRAMOS.find((item) => item.tipo === 'fijo'
+    ? km >= item.desde && km <= item.hasta
+    : km > item.desde && km < item.hasta);
   if (!tramo) return { estado: 'especial', km };
 
   // Interpolación exacta entre extremos; redondeo a pesos al cerrar el neto.

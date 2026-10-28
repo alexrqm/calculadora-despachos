@@ -7,17 +7,22 @@ const get = (id) => document.getElementById(id);
 const distance = get('distance');
 const chiloe = get('chiloe');
 const limite = CONFIG.limitesKm.at(-1);
-const textoTramo = (tramo) => tramo.desde === 0 ? `Hasta ${numero.format(tramo.hasta)} km` : `Más de ${numero.format(tramo.desde)} y hasta ${numero.format(tramo.hasta)} km`;
-const cotizacionEspecial = `Distancia superior a ${numero.format(limite)} km — solicitar cotización especial`;
+const textoTramo = (tramo) => tramo.desde === 0
+  ? `Hasta ${numero.format(tramo.hasta)} km`
+  : tramo.tipo === 'fijo'
+    ? `Desde ${numero.format(tramo.desde)} hasta ${numero.format(tramo.hasta)} km`
+    : `Más de ${numero.format(tramo.desde)} y menos de ${numero.format(tramo.hasta)} km`;
+const cotizacionEspecial = `Distancia superior a ${numero.format(limite)} km — solicitar cotización especial.`;
 
 get('surchargeLabel').textContent = `+${clp.format(CONFIG.recargoChiloe)} netos`;
 get('vatLabel').textContent = `IVA ${porcentaje.format(CONFIG.iva)}`;
-get('tariffNote').textContent = `Sobre ${numero.format(limite)} km se requiere cotización especial. A las tarifas netas se agrega IVA ${porcentaje.format(CONFIG.iva)}.`;
+get('tariffNote').textContent = `Los tramos progresivos aumentan proporcionalmente por kilómetro; los tramos fijos mantienen su valor. Sobre ${numero.format(limite)} km se requiere cotización especial. A las tarifas netas se agrega IVA ${porcentaje.format(CONFIG.iva)}.`;
 
 for (const [index, tramo] of TRAMOS.entries()) {
   const row = document.createElement('tr');
   row.dataset.tier = index;
-  const values = [textoTramo(tramo), index === 0 ? clp.format(tramo.netoHasta) : `${clp.format(tramo.netoDesde)} a ${clp.format(tramo.netoHasta)}`, index === 0 ? 'Tarifa fija' : 'Progresivo'];
+  const fijo = tramo.tipo === 'fijo';
+  const values = [textoTramo(tramo), fijo ? clp.format(tramo.netoHasta) : `${clp.format(tramo.netoDesde)} a ${clp.format(tramo.netoHasta)}`, fijo ? 'Tarifa fija' : 'Progresivo'];
   for (const text of values) {
     const cell = document.createElement('td');
     cell.textContent = text;
